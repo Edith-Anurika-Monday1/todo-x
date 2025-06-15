@@ -1,0 +1,23 @@
+@import "tailwindcss";
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 0 0% 100%;       /* white */
+    --foreground: 240 10% 10%;     /* dark gray */
+    --primary: 221 83% 53%;        /* deep blue */
+    --muted: 210 16% 82%;          /* light gray */
+    --destructive: 0 84% 60%;      /* red */
+    --radius: 0.5rem;
+  }
+
+  .dark {
+    --background: 222 47% 11%;     /* very dark gray */
+    --foreground: 210 40% 98%;     /* near white */
+    --primary: 221 83% 75%;        /* soft blue */
+    --muted: 215 15% 20%;          /* muted dark */
+    --destructive: 0 72% 51%;      /* red */
+  }
+}
