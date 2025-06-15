@@ -171,3 +171,28 @@ This project uses `https://jsonplaceholder.typicode.com/todos` as a mock API/ ba
 - npm run preview   # Preview built app
 
 ---
+
+#### 🚀 Push Local Project to GitHub Repository
+
+To upload your local project to a GitHub repo (e.g., todo-x):
+# Initialize Git (if not already initialized)
+git init
+
+# Add all project files
+git add .
+
+# Commit with a meaningful message
+git commit -m "Initial commit: Set up full React Todo App with Dexie, React Query, Tailwind, and routing..."
+
+# Set the remote origin (replace with your actual GitHub repo link)
+git remote add origin https://github.com/Edith-Anurika-Monday1/todo-x.git
+
+# Pull latest changes from remote (to avoid conflicts)
+git pull --rebase origin main
+
+# Resolve any merge conflicts if prompted (edit files, then run:)
+git add .
+git rebase --continue
+
+# Finally, push your local code to GitHub
+git push -u origin main
