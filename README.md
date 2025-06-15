@@ -137,7 +137,7 @@ This project uses `https://jsonplaceholder.typicode.com/todos` as a mock API/ ba
 ---
 
 ### 📜 Terminal Message
-![bash](/todo-app/screenshots/console.PNG)
+![bash](./console.PNG)
 
 ---
 
