@@ -6,19 +6,22 @@ import NotFound from './pages/NotFound';
 import Navbar from './components/Navbar';
 import { Toaster } from 'sonner';
 
-
 export default function App() {
   return (
     <>
       <Navbar />
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/create" element={<TodoCreate />} />
-        <Route path="/todo/:id" element={<TodoDetail />} />
-        <Route path="*" element={<NotFound />} />
-      </Routes>
-      <Toaster richColors position="top-center" /> {<Toaster />}
 
+      <main className="max-w-4xl mx-auto px-4 py-6">
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/create" element={<TodoCreate />} />
+          <Route path="/todo/:id" element={<TodoDetail />} />
+          <Route path="*" element={<NotFound />} />
+        </Routes>
+      </main>
+
+      {/* Toaster should only be called once */}
+      <Toaster richColors position="top-center" />
     </>
   );
 }

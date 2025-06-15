@@ -5,23 +5,21 @@ import react from '@vitejs/plugin-react';
 export default defineConfig({
   plugins: [react()],
   build: {
+    sourcemap: true,
+    chunkSizeWarningLimit: 600,
     rollupOptions: {
       output: {
         manualChunks(id) {
           if (id.includes('node_modules')) {
-            // Separate vendor code into its own chunk(s)
-            if (id.includes('react')) {
-              return 'vendor_react';
-            }
-            if (id.includes('lucide-react')) {
-              return 'vendor_icons';
-            }
-            // all other node_modules
+            if (id.includes('react')) return 'vendor_react';
+            if (id.includes('lucide-react')) return 'vendor_icons';
             return 'vendor_misc';
           }
         }
       }
-    },
-    chunkSizeWarningLimit: 600, // optionally raise warning limit
-  }
+    }
+  },
+  optimizeDeps: {
+    include: ['react', 'react-dom'],
+  },
 });
