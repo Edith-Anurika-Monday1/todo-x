@@ -232,9 +232,7 @@ I added missing metadata and favicon in `index.html` to ensure proper branding a
 
 ## ⚠️ React Router Future Flag Warning
 
-During development, React Router (v6.23+) displays future warnings in the browser console. These are **not errors** and **do not break your application**, but they inform you of upcoming behavior changes in version 7.
-
----
+During development, React Router (v6.23+) displays future warnings in the browser console. 
 
 ### 🟡 Warning Messages
 
