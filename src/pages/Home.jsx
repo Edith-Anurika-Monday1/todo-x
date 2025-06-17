@@ -1,7 +1,10 @@
 import { useState, useMemo, useEffect } from 'react';
 import { useLiveQuery } from 'dexie-react-hooks';
 import { fetchTodos } from '../api/todos';
-import db from '../db/dexie';
+import {
+  safeGetAllTodos,
+  safeBulkPutTodos,
+} from '../db/dexie';
 import TodoItem from '../components/TodoItem';
 import SearchFilter from '../components/SearchFilter';
 import Pagination from '../components/Pagination';
@@ -13,18 +16,25 @@ export default function Home() {
   const [currentPage, setCurrentPage] = useState(1);
   const todosPerPage = 10;
 
-  useQuery({
+  // Fetch todos from API and store safely into Dexie
+  const { isLoading } = useQuery({
     queryKey: ['todos'],
     queryFn: fetchTodos,
     staleTime: Infinity,
+    onSuccess: async (data) => {
+      await safeBulkPutTodos(data); 
+    },
   });
 
-  const allTodos = useLiveQuery(() => db.todos.toArray(), []) || [];
+  // Read todos safely from Dexie
+  const allTodos = useLiveQuery(() => safeGetAllTodos(), []) || [];
 
+  // Reset to page 1 when filters/search change
   useEffect(() => {
     setCurrentPage(1);
   }, [search, filter]);
 
+  // Apply search & filter
   const filteredTodos = useMemo(() => {
     let filtered = [...allTodos];
 
@@ -43,6 +53,7 @@ export default function Home() {
     return filtered;
   }, [allTodos, search, filter]);
 
+  // Pagination
   const indexOfLast = currentPage * todosPerPage;
   const indexOfFirst = indexOfLast - todosPerPage;
   const currentTodos = filteredTodos.slice(indexOfFirst, indexOfLast);
@@ -56,7 +67,9 @@ export default function Home() {
         setFilter={setFilter}
       />
 
-      {currentTodos.length > 0 ? (
+      {isLoading ? (
+        <p className="text-center text-gray-400">Loading todos...</p>
+      ) : currentTodos.length > 0 ? (
         <ul className="space-y-4">
           {currentTodos.map((todo) => (
             <TodoItem key={todo.id} todo={todo} />
