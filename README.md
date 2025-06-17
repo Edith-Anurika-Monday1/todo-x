@@ -5,7 +5,7 @@ A fully functional Todo application built with **React 19**, **React Router v7**
 
 ---
 
-## 🚀 Features
+### 🚀 Features
 
 - 📝 Create, edit, delete, and view todos
 - ✅ Toggle completed/incomplete todos
@@ -22,7 +22,7 @@ A fully functional Todo application built with **React 19**, **React Router v7**
 
 ---
 
-## 🛠️ Installation
+### 🛠️ Installation
 
 Clone the project and install dependencies:
 
@@ -142,57 +142,144 @@ This project uses `https://jsonplaceholder.typicode.com/todos` as a mock API/ ba
 ---
 
 #### ⚠️ Known Issues
+
 - new todos or deletions only persist in local Dexie storage, Since this app uses JSONPlaceholder (Edits are local and not synced back to JSONPlaceholder).
 - No user authentication — all todos are public and mock-based.
 - Offline mode limited to local device storage.
+- Todos not time regulated.
+- Todo item can not be edited.
 
 ---
 
 ### 🚧 Future Improvements
-- Add user  login and authentication
 
-- Implement drag-and-drop reordering
-
+- Add user  login and authentication.
+- Date, time and alarm notifications/sound implementation.
+- Implement drag-and-drop reordering.
 - Sync Dexie with a real API using background sync / Server-side data persistence with backend.
-
+- Due to one can have swing/change in tasks or schedules, todo item should be made editable.
 - Enable Responsive dark/light mode toggle.
-
-- Add animations for transitions and page changes
-
+- Add animations for transitions and page changes.
 - Improved error handling and retry logic
+- Nav should include deleted todos page.
 
-- Unit and integration tests
+---
+
+### 🧩 Challenges Faced During Project Development
+
+Throughout the development of the **Todo-X** project, I encountered and overcame several challenges across setup, development, debugging, and deployment phases. This document outlines all the key issues and how I resolved them.
+
+---
+
+### 🚀 1. Project Setup & Configuration
+
+- **Initial Setup Confusion**  
+  I experimented with different React setups like CRA and Vite before deciding on **Vite + React + TypeScript**, which offered better performance and developer experience.
+
+- **TailwindCSS Not Working Initially**  
+  TailwindCSS styles were not rendering because of incorrect configuration in `postcss.config.js` and `tailwind.config.js`. Fixing the plugin paths resolved this.
+
+- **ShadCN & Radix UI Integration**  
+  Setting up ShadCN UI components and Radix UI correctly required creating proper folder structures, extending Tailwind themes, and setting default styles.
+
+- **TypeScript Errors Everywhere**  
+  Several TSX files displayed red squiggly lines due to missing prop types or incorrect component wrappers. I resolved this by explicitly typing props and using `React.ComponentPropsWithoutRef`.
+
+---
+
+### ⚙️ 2. Component Logic & API Management
+
+- **No `useEffect` Usage Preference**  
+  I chose to avoid `useEffect`, which made data syncing and query refetching more complex. I used Tanstack Query's built-in mechanisms like `invalidateQueries()` to manage updates.
+
+- **TanStack React Query v5 Migration**  
+  React Query v5 uses a different hook syntax from v4. I updated all query and mutation calls to use the new object-based syntax, including `queryFn`, `mutationFn`, and `queryKey`.
+
+- **Dexie.js (Offline Support)**  
+  Integrating IndexedDB with Dexie for offline persistence required managing state between remote API and local database. There were issues with `add()` vs `put()` that I later resolved.
+
+- **Button Styling Inconsistencies**  
+  Initially, button components had duplicated styles. I later refactored this by creating a `buttonVariants` utility using `class-variance-authority (cva)` to centralize variants.
+
+---
+
+### 💥 3. Functional Bugs & User Experience
+
+- **Checkbox Not Toggling**  
+  The checkbox to mark todos as completed wasn't working. I resolved this by ensuring the `onCheckedChange` handler correctly called `toggleMutation.mutate`.
+
+- **Delete Toast Appearing Without Deletion**  
+  The toast for "Todo deleted" would show even if the deletion didn't happen. I fixed this by wrapping the delete logic in an `AlertDialog` that asks for user confirmation before proceeding.
+
+- **Search and Filter Not Functioning**  
+  The dropdown filter to show completed/incomplete/all todos was broken due to incorrect filter logic. I updated the component to apply filters before rendering.
+
+- **Pagination Not Reflecting Filtered Results**  
+  Pagination worked globally but not on filtered results. I fixed this by slicing only the filtered todos array, not the full list.
+
+---
+
+### 🌐 4. Deployment & Hosting on Vercel
+
+- **Blank Page After Deployment**  
+  After deploying to Vercel, the app showed a blank screen with this error: Uncaught ReferenceError: Cannot access 'Z' before initialization;
+  I traced the issue to a **circular import** between `button.tsx` and `AlertDialog.tsx`. Moving `buttonVariants` to a separate file (`ui/button-variants.ts`) resolved the issue.
+
+- **Favicon and Meta Missing in Production**  
+I added missing metadata and favicon in `index.html` to ensure proper branding and SEO.
+
+---
+
+## ⚠️ React Router Future Flag Warning
+
+During development, React Router (v6.23+) displays future warnings in the browser console. These are **not errors** and **do not break your application**, but they inform you of upcoming behavior changes in version 7.
+
+---
+
+### 🟡 Warning Messages
+
+#### 1. `startTransition` Warning
+
+⚠️ React Router Future Flag Warning: React Router will begin wrapping state updates in React.startTransition in v7.
+You can use the v7_startTransition future flag to opt-in early.
+
+
+#### 2. `relativeSplatPath` Warning
+⚠️ React Router Future Flag Warning: Relative route resolution within Splat routes is changing in v7.
+You can use the v7_relativeSplatPath future flag to opt-in early.
+
+Since my project uses BrowserRouter (not RouterProvider or createBrowserRouter),i considered these warnings safe to ignore though its more modern.
 
 ---
 
 #### 🔃 Available Scripts
-- npm run dev       # Start local dev server
-- npm run build     # Build for production
-- npm run preview   # Preview built app
+- npm run dev (Start local dev server)
+- npm run build (Build for production)
+- npm run dev (Preview built app)
 
 ---
 
-#### 🚀 Push Local Project to GitHub Repository
+## 🚀 Push Local Project to GitHub Repository
 
 To upload your local project to a GitHub repo (e.g., todo-x):
-# Initialize Git (if not already initialized)
+#### Initialize Git (if not already initialized)
 git init
 
-# Add all project files
+#### Add all project files
 git add .
 
-# Commit with a meaningful message
+#### Commit with a meaningful message
 git commit -m "Initial commit: Set up full React Todo App with Dexie, React Query, Tailwind, and routing..."
 
-# Set the remote origin (replace with your actual GitHub repo link)
+#### Set the remote origin (replace with your actual GitHub repo link)
 git remote add origin https://github.com/Edith-Anurika-Monday1/todo-x.git
 
-# Pull latest changes from remote (to avoid conflicts)
+#### Pull latest changes from remote (to avoid conflicts)
 git pull --rebase origin main
 
-# Resolve any merge conflicts if prompted (edit files, then run:)
+#### Resolve any merge conflicts if prompted (edit files, then run:)
 git add .
 git rebase --continue
 
-# Finally, push your local code to GitHub
+#### Finally, push your local code to GitHub
 git push -u origin main
