@@ -1,7 +1,7 @@
-import { useOnline } from '../hooks/useOnline';
+import { useOnline } from "../hooks/UseOnline";
 
-export default function OfflineStatus() {
-  const online = useOnline();
+export default function OfflineStatus():  React.ReactElement | null {
+  const online: boolean = useOnline();
 
   if (online) return null;
 
